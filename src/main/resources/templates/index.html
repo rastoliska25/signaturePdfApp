@@ -55,6 +55,37 @@
         document.getElementById("canvasimg").style.display = "inline";
     }
 
+
+
+
+
+    function test() {
+        var m = confirm("Want to save image?");
+        if (m) {
+
+            var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            window.location.href=image;
+
+        }
+    }
+
+
+    function test2() {
+        var m = confirm("Want to save image?");
+        if (m) {
+
+            document.getElementById("canvasimg").style.border = "2px solid";
+            var dataURL = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            document.getElementById("canvasimg").src = dataURL;
+            document.getElementById("canvasimg").style.display = "inline";
+            window.location.href=dataURL;
+
+        }
+    }
+
+
+
+
     function findxy(res, e) {
         if (res == 'down') {
             prevX = currX;
@@ -91,5 +122,8 @@
 
 <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:25%;left:12%;">
 <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:25%;left:15%;">
+
+<input type="button" value="uloz" id="uloz" size="30" onclick="test()" style="position:absolute;top:25%;left:19%;">
+<input type="button" value="uloz" id="uloz2" size="30" onclick="test2()" style="position:absolute;top:25%;left:25%;">
 </body>
 </html>
