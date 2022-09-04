@@ -5,6 +5,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.web.multipart.MultipartFile;
+import signature.Logging;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,6 +38,8 @@ public class FileEdit {
 
         try (FileOutputStream fos = new FileOutputStream(convFile)) {
             fos.write(file.getBytes());
+        } catch (Exception e) {
+            Logging.logger.info(String.valueOf(e));
         }
 
         return convFile;
