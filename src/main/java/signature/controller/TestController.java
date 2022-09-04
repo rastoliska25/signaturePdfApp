@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import signature.Logging;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
@@ -30,6 +31,7 @@ public class TestController {
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
         response.setSize(size);
+        Logging.logger.info("testovanie do suboru consumed through poll: {}", 10000);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
