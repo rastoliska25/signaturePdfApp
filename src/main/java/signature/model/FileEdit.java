@@ -7,6 +7,9 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.web.multipart.MultipartFile;
 import signature.Logging;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,7 +25,10 @@ public class FileEdit {
 
         //adding image
         PDPage firstPage = inptPdf.getPage(0);
+        pngToJpg();
+
         PDImageXObject image2 = PDImageXObject.createFromFile("C:/projektySubory/signature.jpg", inptPdf);
+
         PDPageContentStream contentStream2 = new PDPageContentStream(inptPdf, firstPage, PDPageContentStream.AppendMode.APPEND, true, true);
         contentStream2.drawImage(image2, 105, 355, 100, 40);
         contentStream2.close();
@@ -43,5 +49,23 @@ public class FileEdit {
         }
 
         return convFile;
+    }
+
+    public static void pngToJpg() {
+        try {
+            File input = new File("C:/projektySubory/signature.png");
+            File output = new File("C:/projektySubory/signature.jpg");
+
+            BufferedImage image = ImageIO.read(input);
+            BufferedImage result = new BufferedImage(
+                    image.getWidth(),
+                    image.getHeight(),
+                    BufferedImage.TYPE_INT_RGB);
+            result.createGraphics().drawImage(image, 0, 0, Color.WHITE, null);
+            ImageIO.write(result, "jpg", output);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
