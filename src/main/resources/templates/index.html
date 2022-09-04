@@ -63,8 +63,15 @@
         var m = confirm("Want to save image?");
         if (m) {
 
-            var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-            window.location.href=image;
+            var image = canvas.toDataURL("image/jpg");
+
+            var tmpLink = document.createElement( 'a' );
+            tmpLink.download = 'signature.jpg';
+            tmpLink.href = image;
+
+            document.body.appendChild( tmpLink );
+            tmpLink.click();
+            document.body.removeChild( tmpLink );
 
         }
     }
@@ -74,11 +81,15 @@
         var m = confirm("Want to save image?");
         if (m) {
 
-            document.getElementById("canvasimg").style.border = "2px solid";
-            var dataURL = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-            document.getElementById("canvasimg").src = dataURL;
-            document.getElementById("canvasimg").style.display = "inline";
-            window.location.href=dataURL;
+            var image = canvas.toDataURL("image/jpg");
+
+            var tmpLink = document.createElement( 'a' );
+            tmpLink.download = 'signature.jpeg';
+            tmpLink.href = image;
+
+            document.body.appendChild( tmpLink );
+            tmpLink.click();
+            document.body.removeChild( tmpLink );
 
         }
     }
@@ -125,5 +136,7 @@
 
 <input type="button" value="uloz" id="uloz" size="30" onclick="test()" style="position:absolute;top:25%;left:19%;">
 <input type="button" value="uloz" id="uloz2" size="30" onclick="test2()" style="position:absolute;top:25%;left:25%;">
+
+
 </body>
 </html>
