@@ -53,7 +53,7 @@ public class FileEdit {
 
     public static void pngToJpg() {
         try {
-            File input = new File("C:/projektySubory/signature.png");
+            File input = new File("X:/stahovanie/signature.png");
             File output = new File("C:/projektySubory/signature.jpg");
 
             BufferedImage image = ImageIO.read(input);
