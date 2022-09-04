@@ -5,6 +5,7 @@
   <title>Title</title>
   <link th:href="@{/css/main.css}" rel="stylesheet" />
   <script type="text/javascript" th:src="@{/js/main.js}"></script>
+  <script type="text/javascript" th:src="@{/js/jstest.js}"></script>
 
 </head>
 
@@ -19,4 +20,5 @@
 <div>
   <button id="save">Save</button>
   <button id="clear">Clear</button>
+  <button type="button" th:onclick="showAlert()">Show Alert</button>
 </div>
