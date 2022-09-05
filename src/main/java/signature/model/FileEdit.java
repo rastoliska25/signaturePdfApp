@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 public class FileEdit {
@@ -37,6 +39,7 @@ public class FileEdit {
         inptPdf.close();
         System.out.println("new pdf was created");
 
+        delete();
     }
 
     public static File convert(MultipartFile file) throws IOException {
@@ -68,4 +71,15 @@ public class FileEdit {
             e.printStackTrace();
         }
     }
+
+    public static void delete() {
+        String fileName = "X:/stahovanie/signature.png";
+        try {
+            Files.delete(Paths.get(fileName));
+        } catch (IOException e) {
+            Logging.logger.info(String.valueOf(e));
+        }
+    }
+
+
 }
