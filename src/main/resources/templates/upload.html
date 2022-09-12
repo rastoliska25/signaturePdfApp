@@ -2,37 +2,42 @@
 
 <script type="text/javascript">
 
-async function uploadFile() {
-    let formData = new FormData();
-    formData.append("file", fileupload.files[0]);
-    await fetch('http://localhost:8080/uploadFile', {
-      method: "POST",
-      body: formData
-    });
-    alert('The file has been uploaded successfully.');
-}
+    async function uploadFile() {
+        let formData = new FormData();
+        formData.append("file", fileupload.files[0]);
+        await fetch('http://localhost:8080/uploadFile', {
+        method: "POST",
+        body: formData
+        });
+        alert('The file has been uploaded successfully.');
+
+        window.location.replace("http://localhost:8080");
+    }
+
 
 </script>
 
+<head>
+    <title>Upload your file</title>
 
+    <style>
+            #upload-button {
+            padding: 10px;
+            color: white;
+            background-color: #009578;
+            border: 1px solid #000;
+            border-radius: 5px;
+            cursor: pointer;
+}
 
+    </style>
+</head>
 
-    <head>
-        <title>Upload your file</title>
-    </head>
+<body>
 
-    <body>
-        <Form Name="file" Method="post" action="">
-            <Input Type="File">
-        </Form>
+<input id="fileupload" type="file" name="fileupload"/>
+<button id="upload-button" onclick="uploadFile()"> Upload</button>
 
-        <button onclick="doupload()" name="submit">Upload File</button>
-
-
-
-        <input id="fileupload" type="file" name="fileupload" />
-        <button id="upload-button" onclick="uploadFile()"> Upload </button>
-
-    </body>
+</body>
 
 </Html>
