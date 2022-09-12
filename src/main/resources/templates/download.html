@@ -1,0 +1,41 @@
+<Html>
+
+<script type="text/javascript">
+
+        function downloadFile (URL, fileName){
+            let link = document.createElement("a");
+
+            link.setAttribute("download", fileName);
+            link.href = URL;
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+</script>
+
+<head>
+    <title>Download your file</title>
+
+    <style>
+            #upload-button {
+            padding: 10px;
+            color: white;
+            background-color: #009578;
+            border: 1px solid #000;
+            border-radius: 5px;
+            cursor: pointer;
+            }
+    </style>
+</head>
+
+<body>
+
+<button id="download-button" onclick="downloadFile('C:/projektySubory/newPDF.pdf','newPDF.pdf')"> Download</button>
+
+<a href="#" onclick="window.open('C:/projektySubory/newPDF.pdf', '_blank', 'fullscreen=yes'); return false;">Show PDF</a>
+
+</body>
+
+</Html>

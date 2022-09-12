@@ -30,6 +30,11 @@ public class TestController {
         return "upload";
     }
 
+    @GetMapping("/download")
+    public String download() {
+        return "download";
+    }
+
     MultipartFile file;
 
     @PostMapping("/receivePdf")
