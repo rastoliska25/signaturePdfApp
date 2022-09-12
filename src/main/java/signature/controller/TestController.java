@@ -15,6 +15,7 @@ import java.util.Objects;
 
 @Controller
 public class TestController {
+
     @GetMapping("/")
     public String start() {
         return "index";
@@ -24,6 +25,30 @@ public class TestController {
     public String upload() {
         return "upload";
     }
+
+
+
+
+
+
+    MultipartFile file;
+
+
+    @PostMapping("/test")
+    public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        long size = multipartFile.getSize();
+
+        FileUploadResponse response = new FileUploadResponse();
+        response.setFileName(fileName);
+        response.setSize(size);
+
+        file = multipartFile;
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     @PostMapping("/uploadFile")
     public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
