@@ -34,7 +34,7 @@ public class TestController {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
-        FileEdit.editFile(multipartFile);
+        FileEdit.convertFile(multipartFile);
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
@@ -55,7 +55,6 @@ public class TestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     //cez postman
     @PostMapping("/uploadFile")
     public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -63,7 +62,7 @@ public class TestController {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
-        FileEdit.editFile(multipartFile);
+        FileEdit.convertFile(multipartFile);
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);

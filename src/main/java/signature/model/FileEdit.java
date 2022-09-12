@@ -21,38 +21,14 @@ public class FileEdit {
 
     static File file;
 
-    public static void editFile(MultipartFile multipartFile) throws IOException {
-
+    public static void convertFile(MultipartFile multipartFile) throws IOException {
         file = convert(multipartFile);
-
-        //PDDocument inptPdf = PDDocument.load(file);
-
-        /*
-        //adding image
-        PDPage firstPage = inptPdf.getPage(0);
-        pngToJpg();
-
-        PDImageXObject image2 = PDImageXObject.createFromFile("C:/projektySubory/signature.jpg", inptPdf);
-
-        PDPageContentStream contentStream2 = new PDPageContentStream(inptPdf, firstPage, PDPageContentStream.AppendMode.APPEND, true, true);
-        contentStream2.drawImage(image2, 105, 355, 100, 40);
-        contentStream2.close();
-
-        inptPdf.save("C:/projektySubory/newPDF.pdf");
-        inptPdf.close();
-        System.out.println("new pdf was created");
-
-        delete();
-
-         */
     }
 
 
     public static void editFile2() throws IOException {
 
-
         PDDocument inptPdf = PDDocument.load(file);
-
 
         //adding image
         PDPage firstPage = inptPdf.getPage(0);
@@ -69,18 +45,7 @@ public class FileEdit {
         System.out.println("new pdf was created");
 
         delete();
-
-
     }
-
-
-
-
-
-
-
-
-
 
 
     public static File convert(MultipartFile multipartFile) throws IOException {
