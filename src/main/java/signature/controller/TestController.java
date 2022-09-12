@@ -20,6 +20,11 @@ public class TestController {
         return "index";
     }
 
+    @GetMapping("/upload")
+    public String upload() {
+        return "upload";
+    }
+
     @PostMapping("/uploadFile")
     public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 
@@ -35,4 +40,31 @@ public class TestController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
+
+
+
+
+    @PostMapping("/test")
+    public ResponseEntity<FileUploadResponse> test(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+
+
+        Logging.logger.info("test OK");
+
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        long size = multipartFile.getSize();
+
+        FileEdit.editFile(multipartFile);
+
+        FileUploadResponse response = new FileUploadResponse();
+        response.setFileName(fileName);
+        response.setSize(size);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
+
 }
