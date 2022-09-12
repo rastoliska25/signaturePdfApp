@@ -60,8 +60,25 @@
             document.body.appendChild( tmpLink );
             tmpLink.click();
             document.body.removeChild( tmpLink );
+
         }
     }
+
+        function signature() {
+        var m = confirm("Want to proceed?");
+        if (m) {
+
+            fetch('http://localhost:8080/test2', {
+            Method: 'GET',
+            Headers: {
+            Accept: 'application.json',
+            'Content-Type': 'application/json'
+            },
+            Cache: 'default'
+            })
+        }
+    }
+
 
     function findxy(res, e) {
         if (res == 'down') {
@@ -94,12 +111,15 @@
         }
     }
 
+
+
 </script>
 <body onload="init()">
 <canvas id="can" width="400" height="200" style="position:absolute;top:7%;left:5%;border:2px solid;"></canvas>
 
 <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:25%;left:7%;">
 <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:25%;left:10%;">
+<input type="button" value="signature" id="btnSignature" size="23" onclick="signature()" style="position:absolute;top:25%;left:26%;">
 
 </body>
 </html>

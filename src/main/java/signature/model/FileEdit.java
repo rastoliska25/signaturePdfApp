@@ -19,11 +19,40 @@ import java.util.Objects;
 
 public class FileEdit {
 
+    static File file;
+
     public static void editFile(MultipartFile multipartFile) throws IOException {
 
-        File file = convert(multipartFile);
+        file = convert(multipartFile);
+
+        //PDDocument inptPdf = PDDocument.load(file);
+
+        /*
+        //adding image
+        PDPage firstPage = inptPdf.getPage(0);
+        pngToJpg();
+
+        PDImageXObject image2 = PDImageXObject.createFromFile("C:/projektySubory/signature.jpg", inptPdf);
+
+        PDPageContentStream contentStream2 = new PDPageContentStream(inptPdf, firstPage, PDPageContentStream.AppendMode.APPEND, true, true);
+        contentStream2.drawImage(image2, 105, 355, 100, 40);
+        contentStream2.close();
+
+        inptPdf.save("C:/projektySubory/newPDF.pdf");
+        inptPdf.close();
+        System.out.println("new pdf was created");
+
+        delete();
+
+         */
+    }
+
+
+    public static void editFile2() throws IOException {
+
 
         PDDocument inptPdf = PDDocument.load(file);
+
 
         //adding image
         PDPage firstPage = inptPdf.getPage(0);
@@ -40,13 +69,25 @@ public class FileEdit {
         System.out.println("new pdf was created");
 
         delete();
+
+
     }
 
-    public static File convert(MultipartFile file) throws IOException {
-        File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+
+
+
+
+
+
+
+
+
+
+    public static File convert(MultipartFile multipartFile) throws IOException {
+        File convFile = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
         try (FileOutputStream fos = new FileOutputStream(convFile)) {
-            fos.write(file.getBytes());
+            fos.write(multipartFile.getBytes());
         } catch (Exception e) {
             Logging.logger.info(String.valueOf(e));
         }

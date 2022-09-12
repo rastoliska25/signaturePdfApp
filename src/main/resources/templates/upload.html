@@ -10,7 +10,9 @@
 
         let formData = new FormData();
         formData.append("file", fileupload.files[0]);
-        await fetch('http://localhost:8080/uploadFile', {
+
+
+        await fetch('http://localhost:8080/receivePdf', {
         method: "POST",
         body: formData
         });

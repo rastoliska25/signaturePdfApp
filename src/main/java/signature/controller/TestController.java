@@ -26,30 +26,37 @@ public class TestController {
         return "upload";
     }
 
-
-
-
-
-
     MultipartFile file;
 
-
-    @PostMapping("/test")
+    @PostMapping("/receivePdf")
     public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
+        FileEdit.editFile(multipartFile);
+
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
         response.setSize(size);
-
-        file = multipartFile;
+        Logging.logger.info("testovanie do suboru consumed through poll: {}", 10000);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
+    @GetMapping("/test2")
+    public ResponseEntity<String> uploadFiles() throws IOException {
+
+        FileEdit.editFile2();
+
+        Logging.logger.info("testovanie do suboru consumed through poll: {}", 10000);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    //cez postman
     @PostMapping("/uploadFile")
     public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 
