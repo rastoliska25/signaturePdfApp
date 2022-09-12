@@ -25,7 +25,6 @@ public class FileEdit {
         file = convert(multipartFile);
     }
 
-
     public static void editFile2() throws IOException {
 
         PDDocument inptPdf = PDDocument.load(file);
@@ -46,7 +45,6 @@ public class FileEdit {
 
         delete();
     }
-
 
     public static File convert(MultipartFile multipartFile) throws IOException {
         File convFile = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
