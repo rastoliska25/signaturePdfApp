@@ -13,6 +13,33 @@
             link.remove();
         }
 
+           function download() {
+            var m = confirm("Want to download file?");
+            if (m) {
+
+            fetch('http://localhost:8080/downloadFile', {
+            Method: 'GET',
+            Headers: {
+            Accept: 'application.json',
+            'Content-Type': 'application/json'
+            },
+            Cache: 'default'
+            })
+
+            alert('The file has been downloaded successfully.');
+
+            var m = confirm("Want to upload new file?");
+            if (m) {
+                window.location.replace("http://localhost:8080/upload");
+            }
+
+        }
+    }
+
+
+
+
+
 </script>
 
 <head>
@@ -27,14 +54,17 @@
             border-radius: 5px;
             cursor: pointer;
             }
+
+
     </style>
 </head>
 
 <body>
 
-<button id="download-button" onclick="downloadFile('C:/projektySubory/newPDF.pdf','newPDF.pdf')"> Download</button>
+<button id="download-button" onclick="download()"> Download</button>
 
-<a href="#" onclick="window.open('C:/projektySubory/newPDF.pdf', '_blank', 'fullscreen=yes'); return false;">Show PDF</a>
+<a href="#" onclick="window.open('C:/projektySubory/newPDF.pdf', '_blank', 'fullscreen=yes'); return false;">Show
+    PDF</a>
 
 </body>
 

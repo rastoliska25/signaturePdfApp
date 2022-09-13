@@ -21,13 +21,15 @@ public class FileEdit {
 
     static File file;
 
+    static PDDocument inptPdf;
+
     public static void convertFile(MultipartFile multipartFile) throws IOException {
         file = convert(multipartFile);
     }
 
     public static void editFile2() throws IOException {
 
-        PDDocument inptPdf = PDDocument.load(file);
+        inptPdf = PDDocument.load(file);
 
         //adding image
         PDPage firstPage = inptPdf.getPage(0);
@@ -39,12 +41,23 @@ public class FileEdit {
         contentStream2.drawImage(image2, 105, 355, 100, 40);
         contentStream2.close();
 
-        inptPdf.save("C:/projektySubory/newPDF.pdf");
+        //inptPdf.save("C:/projektySubory/newPDF.pdf");
+
+        /*
+        String home = System.getProperty("user.home");
+        inptPdf.save(home+"/Downloads/newPDF.pdf");
+
         inptPdf.close();
         System.out.println("new pdf was created");
 
+
         delete();
+
+         */
     }
+
+
+
 
     public static File convert(MultipartFile multipartFile) throws IOException {
         File convFile = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
@@ -85,5 +98,13 @@ public class FileEdit {
         }
     }
 
+    public static void save() throws IOException {
+        String home = System.getProperty("user.home");
+        inptPdf.save(home+"/Downloads/newPDF.pdf");
 
+        inptPdf.close();
+        System.out.println("new pdf was created");
+
+        delete();
+    }
 }
