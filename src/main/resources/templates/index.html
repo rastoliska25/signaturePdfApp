@@ -64,9 +64,26 @@
         }
     }
 
-        function signature() {
-        var m = confirm("Want to proceed?");
+    async function testsave() {
+        var m = confirm("Want to save image?");
         if (m) {
+
+            var file = canvas.toDataURL();
+
+            let formData = new FormData();
+
+            formData.append("image", file);
+
+            await fetch('http://localhost:8080/receiveImage', {
+            method: "POST",
+            body: formData
+            });
+        }
+    }
+
+    function signature() {
+    var m = confirm("Want to proceed?");
+    if (m) {
 
             fetch('http://localhost:8080/test2', {
             Method: 'GET',
@@ -78,7 +95,6 @@
             })
         }
     }
-
 
     function findxy(res, e) {
         if (res == 'down') {
@@ -120,6 +136,9 @@
 <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:25%;left:7%;">
 <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:25%;left:10%;">
 <input type="button" value="signature" id="btnSignature" size="23" onclick="signature()" style="position:absolute;top:25%;left:26%;">
+
+
+<div id="container"></div>
 
 </body>
 </html>
