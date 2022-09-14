@@ -89,4 +89,10 @@ public class FileEdit {
         System.out.println("new pdf was created");
 
     }
+
+    public PDDocument save2() throws IOException {
+        return inptPdf;
+    }
+
+
 }

@@ -17,14 +17,7 @@
             var m = confirm("Want to download file?");
             if (m) {
 
-            fetch('http://localhost:8080/downloadFile', {
-            Method: 'GET',
-            Headers: {
-            Accept: 'application.json',
-            'Content-Type': 'application/json'
-            },
-            Cache: 'default'
-            })
+            window.location.replace("http://localhost:8080/demo2");
 
             alert('The file has been downloaded successfully.');
 
@@ -34,6 +27,10 @@
             }
 
         }
+
+
+
+
     }
 
 
