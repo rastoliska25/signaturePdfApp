@@ -57,23 +57,6 @@ public class TestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //cez postman
-    @PostMapping("/uploadFile")
-    public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        long size = multipartFile.getSize();
-
-        FileEdit.convertFile(multipartFile);
-
-        FileUploadResponse response = new FileUploadResponse();
-        response.setFileName(fileName);
-        response.setSize(size);
-        Logging.logger.info(fileName + "  " + size);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @PostMapping("/receiveImage")
     public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 
