@@ -40,12 +40,11 @@ public class FileEdit {
         PDPage firstPage = inptPdf.getPage(0);
         File imageJPG = pngToJpg(image);
 
-        PDImageXObject image2 = PDImageXObject.createFromFile("C:/projektySubory/signature.jpg", inptPdf);
+        PDImageXObject image2 = PDImageXObject.createFromFile(imageJPG.getPath(), inptPdf);
 
         PDPageContentStream contentStream2 = new PDPageContentStream(inptPdf, firstPage, PDPageContentStream.AppendMode.APPEND, true, true);
         contentStream2.drawImage(image2, 105, 355, 100, 40);
         contentStream2.close();
-
     }
 
 

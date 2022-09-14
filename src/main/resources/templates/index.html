@@ -48,23 +48,7 @@
         }
     }
 
-    function save() {
-        var m = confirm("Want to save image?");
-        if (m) {
-            var image = canvas.toDataURL("image/png");
-
-            var tmpLink = document.createElement( 'a' );
-            tmpLink.download = 'signature.png';
-            tmpLink.href = image;
-
-            document.body.appendChild( tmpLink );
-            tmpLink.click();
-            document.body.removeChild( tmpLink );
-
-        }
-    }
-
-    async function testsave() {
+    async function save() {
         var m = confirm("Want to sign?");
         if (m) {
 
@@ -147,7 +131,7 @@
 <body onload="init()">
 <canvas id="can" width="400" height="200" style="position:absolute;top:7%;left:5%;border:2px solid;"></canvas>
 
-<input type="button" value="save" id="btn" size="30" onclick="testsave()" style="position:absolute;top:25%;left:7%;">
+<input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:25%;left:7%;">
 <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:25%;left:10%;">
 <input type="button" value="signature" id="btnSignature" size="23" onclick="signature()"
        style="position:absolute;top:25%;left:26%;">
