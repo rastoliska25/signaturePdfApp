@@ -4,9 +4,14 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.multipart.MultipartFile;
 import signature.Logging;
 
+import javax.annotation.ManagedBean;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,18 +20,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
+@ManagedBean
+@ApplicationScope
 public class FileEdit {
+
 
     static File file;
 
     static PDDocument inptPdf;
 
-    public static void convertFile(MultipartFile multipartFile) throws IOException {
+
+    //File file;
+
+    //File inptPdf;
+
+    public void convertFile(MultipartFile multipartFile) throws IOException {
         Logging.logger.info(String.valueOf(multipartFile.getSize()));
         file = convert(multipartFile);
     }
 
-    public static void editFile2(MultipartFile imageFile) throws IOException {
+    public void editFile2(MultipartFile imageFile) throws IOException {
 
         File image = convert(imageFile);
 
@@ -44,7 +57,7 @@ public class FileEdit {
     }
 
 
-    public static File convert(MultipartFile multipartFile) throws IOException {
+    public File convert(MultipartFile multipartFile) throws IOException {
         File convFile = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
         try (FileOutputStream fos = new FileOutputStream(convFile)) {
@@ -56,7 +69,7 @@ public class FileEdit {
         return convFile;
     }
 
-    public static File pngToJpg(File imageFile) {
+    public File pngToJpg(File imageFile) {
         File output = null;
         try {
             output = File.createTempFile("signature", ".jpg");
@@ -75,7 +88,7 @@ public class FileEdit {
         return output;
     }
 
-    public static void save() throws IOException {
+    public void save() throws IOException {
         String home = System.getProperty("user.home");
         inptPdf.save(home + "/Downloads/newPDF.pdf");
 

@@ -1,5 +1,6 @@
 package signature.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,9 @@ public class TestController {
         return "download";
     }
 
-    MultipartFile file;
+    @Autowired
+    FileEdit fileEdit;
+
 
     @PostMapping("/receivePdf")
     public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -39,7 +42,7 @@ public class TestController {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
-        FileEdit.convertFile(multipartFile);
+        fileEdit.convertFile(multipartFile);
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
@@ -52,7 +55,7 @@ public class TestController {
     @GetMapping("/downloadFile")
     public ResponseEntity<String> uploadFiles2() throws IOException {
 
-        FileEdit.save();
+        fileEdit.save();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -63,7 +66,7 @@ public class TestController {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
-        FileEdit.editFile2(multipartFile);
+        fileEdit.editFile2(multipartFile);
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
