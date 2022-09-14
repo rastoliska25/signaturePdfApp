@@ -68,16 +68,23 @@
         var m = confirm("Want to save image?");
         if (m) {
 
-            var file = canvas.toDataURL();
+            var link = document.createElement("a");
 
-            let formData = new FormData();
+            canvas.toBlob(function(blob){
+                link.href = URL.createObjectURL(blob);
+                console.log(blob);
+                console.log(link.href);
+                let formData = new FormData();
 
-            formData.append("image", file);
+                formData.append("file", blob);
 
-            await fetch('http://localhost:8080/receiveImage', {
-            method: "POST",
-            body: formData
-            });
+                fetch('http://localhost:8080/receiveImage', {
+                method: "POST",
+                body: formData
+                });
+
+            },'image/png');
+
         }
     }
 
@@ -134,13 +141,19 @@
 
 
 
+
+
 </script>
 <body onload="init()">
 <canvas id="can" width="400" height="200" style="position:absolute;top:7%;left:5%;border:2px solid;"></canvas>
 
-<input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:25%;left:7%;">
+<input type="button" value="save" id="btn" size="30" onclick="testsave()" style="position:absolute;top:25%;left:7%;">
 <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:25%;left:10%;">
-<input type="button" value="signature" id="btnSignature" size="23" onclick="signature()" style="position:absolute;top:25%;left:26%;">
+<input type="button" value="signature" id="btnSignature" size="23" onclick="signature()"
+       style="position:absolute;top:25%;left:26%;">
+
+
+<input id="fileupload" type="file" name="fileupload"/>
 
 
 <div id="container"></div>

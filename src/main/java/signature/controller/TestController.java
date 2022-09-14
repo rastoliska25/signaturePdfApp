@@ -14,6 +14,7 @@ import signature.model.FileDownloadUtil;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -112,17 +113,24 @@ public class TestController {
     }
 
     @PostMapping("/receiveImage")
-    public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("image") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        long size = multipartFile.getSize();
+        /*
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        long size = file.getSize();
 
         //FileEdit.convertFile(multipartFile);
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
         response.setSize(size);
-        Logging.logger.info(fileName + "  " + size);
+
+         */
+
+        //FileEdit.convertFile2(file);
+
+        FileUploadResponse response = new FileUploadResponse();
+        Logging.logger.info("test");
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
