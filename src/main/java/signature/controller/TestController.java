@@ -56,8 +56,8 @@ public class TestController {
     public ResponseEntity<String> uploadFiles2() throws IOException {
 
         fileEdit.save();
-
         return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     @PostMapping("/receiveImage")
