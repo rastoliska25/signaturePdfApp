@@ -59,7 +59,7 @@ public class FileEdit {
     public static File pngToJpg(File imageFile) {
         File output = null;
         try {
-            output = new File("C:/projektySubory/signature.jpg");
+            output = File.createTempFile("signature", ".jpg");
 
             BufferedImage image = ImageIO.read(imageFile);
             BufferedImage result = new BufferedImage(
