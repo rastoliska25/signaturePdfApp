@@ -76,7 +76,7 @@
                 console.log(link.href);
                 let formData = new FormData();
 
-                formData.append("file", blob);
+                formData.append("file", blob, "image.png");
 
                 fetch('http://localhost:8080/receiveImage', {
                 method: "POST",

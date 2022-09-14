@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class FileEdit {
@@ -24,6 +25,8 @@ public class FileEdit {
     static PDDocument inptPdf;
 
     public static void convertFile(MultipartFile multipartFile) throws IOException {
+        System.out.println(multipartFile.getSize());
+        System.out.println(Arrays.toString(multipartFile.getBytes()));
         file = convert(multipartFile);
     }
 

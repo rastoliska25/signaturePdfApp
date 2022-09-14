@@ -114,23 +114,16 @@ public class TestController {
 
     @PostMapping("/receiveImage")
     public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        long size = multipartFile.getSize();
 
-        /*
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        long size = file.getSize();
-
-        //FileEdit.convertFile(multipartFile);
+        FileEdit.convertFile(multipartFile);
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
         response.setSize(size);
-
-         */
-
-        //FileEdit.convertFile2(file);
-
-        FileUploadResponse response = new FileUploadResponse();
-        Logging.logger.info("test");
+        Logging.logger.info(fileName + "  " + size);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
