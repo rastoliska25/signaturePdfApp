@@ -58,7 +58,7 @@ public class TestController {
     @GetMapping("/test2")
     public ResponseEntity<String> uploadFiles() throws IOException {
 
-        FileEdit.editFile2();
+        //FileEdit.editFile2();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -114,11 +114,11 @@ public class TestController {
 
     @PostMapping("/receiveImage")
     public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        
+
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
-        FileEdit.convertFile(multipartFile);
+        FileEdit.editFile2(multipartFile);
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);

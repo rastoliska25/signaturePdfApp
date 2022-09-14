@@ -26,17 +26,19 @@ public class FileEdit {
 
     public static void convertFile(MultipartFile multipartFile) throws IOException {
         System.out.println(multipartFile.getSize());
-        System.out.println(Arrays.toString(multipartFile.getBytes()));
+        //System.out.println(Arrays.toString(multipartFile.getBytes()));
         file = convert(multipartFile);
     }
 
-    public static void editFile2() throws IOException {
+    public static void editFile2(MultipartFile imageFile) throws IOException {
+
+        File image = convert(imageFile);
 
         inptPdf = PDDocument.load(file);
 
         //adding image
         PDPage firstPage = inptPdf.getPage(0);
-        pngToJpg();
+        File imageJPG = pngToJpg(image);
 
         PDImageXObject image2 = PDImageXObject.createFromFile("C:/projektySubory/signature.jpg", inptPdf);
 
@@ -44,22 +46,7 @@ public class FileEdit {
         contentStream2.drawImage(image2, 105, 355, 100, 40);
         contentStream2.close();
 
-        //inptPdf.save("C:/projektySubory/newPDF.pdf");
-
-        /*
-        String home = System.getProperty("user.home");
-        inptPdf.save(home+"/Downloads/newPDF.pdf");
-
-        inptPdf.close();
-        System.out.println("new pdf was created");
-
-
-        delete();
-
-         */
     }
-
-
 
 
     public static File convert(MultipartFile multipartFile) throws IOException {
@@ -74,10 +61,11 @@ public class FileEdit {
         return convFile;
     }
 
-    public static void pngToJpg() {
+    public static File pngToJpg(File imageFile) {
+        File output = null;
         try {
-            File input = new File("X:/stahovanie/signature.png");
-            File output = new File("C:/projektySubory/signature.jpg");
+            File input = imageFile;
+            output = new File("C:/projektySubory/signature.jpg");
 
             BufferedImage image = ImageIO.read(input);
             BufferedImage result = new BufferedImage(
@@ -90,24 +78,15 @@ public class FileEdit {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void delete() {
-        String fileName = "X:/stahovanie/signature.png";
-        try {
-            Files.delete(Paths.get(fileName));
-        } catch (IOException e) {
-            Logging.logger.info(String.valueOf(e));
-        }
+        return output;
     }
 
     public static void save() throws IOException {
         String home = System.getProperty("user.home");
-        inptPdf.save(home+"/Downloads/newPDF.pdf");
+        inptPdf.save(home + "/Downloads/newPDF.pdf");
 
         inptPdf.close();
         System.out.println("new pdf was created");
 
-        delete();
     }
 }
