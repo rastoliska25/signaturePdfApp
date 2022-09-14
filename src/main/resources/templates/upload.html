@@ -11,7 +11,6 @@
         let formData = new FormData();
         formData.append("file", fileupload.files[0]);
 
-
         await fetch('http://localhost:8080/receivePdf', {
         method: "POST",
         body: formData
@@ -37,6 +36,7 @@
             border-radius: 5px;
             cursor: pointer;
             }
+
 
     </style>
 </head>
