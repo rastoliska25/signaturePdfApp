@@ -1,5 +1,7 @@
 package signature.controller;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -11,7 +13,7 @@ import signature.Logging;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -79,24 +81,16 @@ public class TestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-    @GetMapping(value = "/demo")
-    public ResponseEntity<byte[]> demo() {
-        String demoContent = "This is dynamically generated content in demo file";
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("demo-file.txt").build().toString());
-        return ResponseEntity.ok().headers(httpHeaders).body(demoContent.getBytes());
-    }
-
-    @GetMapping(value = "/demo2")
+    @GetMapping(value = "/downloadPdf")
     public ResponseEntity<byte[]> getPDF() throws IOException {
 
-        // retrieve contents of "C:/tmp/report.pdf" that were written in showHelp
-        //byte[] contents = Files.readAllBytes((Path) fileEdit.save2());
+        PDDocument document = fileEdit.save2();
 
-        byte[] contents = Files.readAllBytes(Paths.get("C:/projektySubory/NewPDF.pdf"));
-
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        document.save(byteArrayOutputStream);
+        document.close();
+        InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        byte[] bytes = IOUtils.toByteArray(inputStream);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
@@ -104,13 +98,6 @@ public class TestController {
         String filename = "output.pdf";
         headers.setContentDispositionFormData(filename, filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
-        return response;
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
-
-    //PDDocument document = fileEdit.save2();
-
-
-
-
 }
