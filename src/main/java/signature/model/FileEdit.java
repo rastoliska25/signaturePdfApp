@@ -7,6 +7,8 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.multipart.MultipartFile;
 import signature.Logging;
@@ -20,19 +22,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-@ManagedBean
-@ApplicationScope
+//@ManagedBean
+//@ApplicationScope
+//@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Component
 public class FileEdit {
 
+    File file;
 
-    static File file;
-
-    static PDDocument inptPdf;
-
-
-    //File file;
-
-    //File inptPdf;
+    PDDocument inptPdf;
 
     public void convertFile(MultipartFile multipartFile) throws IOException {
         Logging.logger.info(String.valueOf(multipartFile.getSize()));
