@@ -13,9 +13,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class FileEdit {
@@ -25,8 +22,7 @@ public class FileEdit {
     static PDDocument inptPdf;
 
     public static void convertFile(MultipartFile multipartFile) throws IOException {
-        System.out.println(multipartFile.getSize());
-        //System.out.println(Arrays.toString(multipartFile.getBytes()));
+        Logging.logger.info(String.valueOf(multipartFile.getSize()));
         file = convert(multipartFile);
     }
 
@@ -63,10 +59,9 @@ public class FileEdit {
     public static File pngToJpg(File imageFile) {
         File output = null;
         try {
-            File input = imageFile;
             output = new File("C:/projektySubory/signature.jpg");
 
-            BufferedImage image = ImageIO.read(input);
+            BufferedImage image = ImageIO.read(imageFile);
             BufferedImage result = new BufferedImage(
                     image.getWidth(),
                     image.getHeight(),
