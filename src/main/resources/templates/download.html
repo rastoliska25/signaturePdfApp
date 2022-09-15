@@ -21,6 +21,8 @@
 
             alert('The file has been downloaded successfully.');
 
+            localStorage.clear();
+
             var m = confirm("Want to upload new file?");
             if (m) {
                 window.location.replace("http://localhost:8080/upload");
