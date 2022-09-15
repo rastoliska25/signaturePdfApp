@@ -8,18 +8,28 @@
             alert('No file selected');
         } else {
 
-        let formData = new FormData();
-        formData.append("file", fileupload.files[0]);
+            var fup = document.getElementById("fileupload");
+            var fileName = fup.value;
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
 
-        await fetch('http://localhost:8080/receivePdf', {
-        method: "POST",
-        body: formData
-        });
-        alert('The file has been uploaded successfully.');
+            if(ext == "pdf" ) {
 
-        window.location.replace("http://localhost:8080");
+                let formData = new FormData();
+                formData.append("file", fileupload.files[0]);
+
+                await fetch('http://localhost:8080/receivePdf', {
+                method: "POST",
+                body: formData
+                });
+                alert('The file has been uploaded successfully.');
+
+                window.location.replace("http://localhost:8080");
+            } else {
+                alert('Only PDF files can be uploaded');
+            }
         }
     }
+
 
 
 </script>
@@ -36,6 +46,7 @@
             border-radius: 5px;
             cursor: pointer;
             }
+
 
 
     </style>
