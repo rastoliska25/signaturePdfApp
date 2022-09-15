@@ -53,7 +53,7 @@ public class TestController {
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
         response.setSize(size);
-        Logging.logger.info(fileName + "  " + size);
+        Logging.logger.info("PDF was received: " + fileName + "  size: " + size + " bytes");
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -64,12 +64,13 @@ public class TestController {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
+        Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
+
         fileEdit.editFile2(multipartFile);
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
         response.setSize(size);
-        Logging.logger.info(fileName + "  " + size);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -87,8 +88,11 @@ public class TestController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        // Here you have to set the actual filename of your pdf
+
         String filename = "output.pdf";
+
+        Logging.logger.info("PDF was downloaded: " + filename);
+
         headers.setContentDispositionFormData(filename, filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);

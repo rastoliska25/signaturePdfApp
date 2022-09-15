@@ -28,7 +28,6 @@ public class FileEdit {
     PDDocument inptPdf;
 
     public void convertFile(MultipartFile multipartFile) throws IOException {
-        Logging.logger.info(String.valueOf(multipartFile.getSize()));
         file = convert(multipartFile);
     }
 
@@ -46,6 +45,9 @@ public class FileEdit {
 
         PDPageContentStream contentStream2 = new PDPageContentStream(inptPdf, firstPage, PDPageContentStream.AppendMode.APPEND, true, true);
         contentStream2.drawImage(image2, 105, 355, 100, 40);
+
+        Logging.logger.info("Signature was added to PDF file");
+
         contentStream2.close();
     }
 
@@ -74,6 +76,8 @@ public class FileEdit {
                     BufferedImage.TYPE_INT_RGB);
             result.createGraphics().drawImage(image, 0, 0, Color.WHITE, null);
             ImageIO.write(result, "jpg", output);
+
+            Logging.logger.info("Signature image was converted from PNG to JPG");
 
         } catch (IOException e) {
             e.printStackTrace();
