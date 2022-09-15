@@ -9,11 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import signature.Logging;
 import signature.exception.ApiRequestException;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,12 +46,18 @@ public class TestController {
 
 
     @PostMapping("/receivePdf")
-    public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) {
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
-        fileEdit.convertFile(multipartFile);
+        try {
+            fileEdit.convertFile(multipartFile);
+        } catch (IOException ex) {
+            Logging.logger.info("ERROR: Input PDF not found:\n");
+            ex.printStackTrace();
+            System.exit(1);
+        }
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
@@ -59,14 +68,20 @@ public class TestController {
     }
 
     @PostMapping("/receiveImage")
-    public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("file") MultipartFile multipartFile) {
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
         Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
 
-        fileEdit.editFile2(multipartFile);
+        try {
+            fileEdit.editFile2(multipartFile);
+        } catch (IOException ex) {
+            Logging.logger.info("ERROR: Image file not found:\n");
+            ex.printStackTrace();
+            System.exit(1);
+        }
 
         FileUploadResponse response = new FileUploadResponse();
         response.setFileName(fileName);
@@ -76,9 +91,15 @@ public class TestController {
     }
 
     @GetMapping(value = "/downloadPdf")
-    public ResponseEntity<byte[]> getPDF() throws ApiRequestException, IOException {
+    public ResponseEntity<byte[]> getPDF() throws IOException {
 
-        PDDocument document = fileEdit.save2();
+        PDDocument document = null;
+
+        document = fileEdit.save2();
+
+        if (document == null) {
+            Logging.logger.info("ERROR: Document to sign not found.");
+        }
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         document.save(byteArrayOutputStream);
@@ -95,13 +116,7 @@ public class TestController {
 
         headers.setContentDispositionFormData(filename, filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
-
-    @GetMapping("/hello")
-    public String hello() {
-        throw new ApiRequestException("hello world");
-        //return "download";
-    }
-
 }

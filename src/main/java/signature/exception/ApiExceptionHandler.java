@@ -11,18 +11,23 @@ import java.time.ZonedDateTime;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(value = {ApiRequestException.class, IOException.class})
-    public ResponseEntity<Object> handleApiRequestException(ApiRequestException e) {
+    @ExceptionHandler(value = {ApiRequestException.class})
+    public ResponseEntity<Object> handleApiRequestExceptionInternalServerError(ApiRequestException e) {
 
-        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        HttpStatus internalServerError = HttpStatus.NOT_FOUND;
 
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 e,
-                badRequest,
+                internalServerError,
                 ZonedDateTime.now()
         );
 
-        return new ResponseEntity<>(apiException, badRequest);
+        return new ResponseEntity<>(apiException, internalServerError);
+    }
+
+    @ExceptionHandler({IOException.class})
+    public String IOExceptionError(IOException e) {
+        return "IOExceptionError: " + e;
     }
 }
