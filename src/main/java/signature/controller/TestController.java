@@ -1,6 +1,5 @@
 package signature.controller;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,18 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 import signature.Logging;
-import signature.exception.ApiRequestException;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 @Controller
@@ -37,7 +29,7 @@ public class TestController {
     }
 
     @GetMapping("/download")
-    public String download() throws ApiRequestException {
+    public String download() {
         return "download";
     }
 
