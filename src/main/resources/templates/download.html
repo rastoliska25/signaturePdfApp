@@ -21,15 +21,13 @@
 
             alert('The file has been downloaded successfully.');
 
-            localStorage.clear();
+            window.location.replace("http://localhost:8080/upload");
 
-            var m = confirm("Want to upload new file?");
-            if (m) {
-                window.location.replace("http://localhost:8080/upload");
-            }
+            form.reset();
 
         }
     }
+
 
 
 
@@ -47,6 +45,7 @@
             border-radius: 5px;
             cursor: pointer;
             }
+
     </style>
 </head>
 

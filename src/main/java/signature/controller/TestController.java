@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import signature.Logging;
+import signature.exception.ApiRequestException;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
@@ -33,7 +34,7 @@ public class TestController {
     }
 
     @GetMapping("/download")
-    public String download() {
+    public String download() throws ApiRequestException {
         return "download";
     }
 
@@ -74,7 +75,7 @@ public class TestController {
     }
 
     @GetMapping(value = "/downloadPdf")
-    public ResponseEntity<byte[]> getPDF() throws IOException {
+    public ResponseEntity<byte[]> getPDF() throws ApiRequestException, IOException {
 
         PDDocument document = fileEdit.save2();
 
@@ -92,4 +93,11 @@ public class TestController {
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
+
+    @GetMapping("/hello")
+    public String hello() {
+        throw new ApiRequestException("hello world");
+        //return "download";
+    }
+
 }
