@@ -57,14 +57,6 @@ public class TestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/downloadFile")
-    public ResponseEntity<String> uploadFiles2() throws IOException {
-
-        fileEdit.save();
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-
     @PostMapping("/receiveImage")
     public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 

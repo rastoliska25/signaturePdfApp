@@ -81,15 +81,6 @@ public class FileEdit {
         return output;
     }
 
-    public void save() throws IOException {
-        String home = System.getProperty("user.home");
-        inptPdf.save(home + "/Downloads/newPDF.pdf");
-
-        inptPdf.close();
-        System.out.println("new pdf was created");
-
-    }
-
     public PDDocument save2() throws IOException {
         return inptPdf;
     }
