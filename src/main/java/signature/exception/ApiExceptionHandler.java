@@ -4,9 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartException;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -18,7 +23,6 @@ public class ApiExceptionHandler {
 
         ApiException apiException = new ApiException(
                 e.getMessage(),
-                e,
                 internalServerError,
                 ZonedDateTime.now()
         );
@@ -26,8 +30,31 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, internalServerError);
     }
 
-    @ExceptionHandler({IOException.class})
-    public String IOExceptionError(IOException e) {
-        return "IOExceptionError: " + e;
+    @ExceptionHandler(value = {IOException.class})
+    public ResponseEntity<Object> IOExceptionError (IOException e) {
+
+        HttpStatus internalServerError = HttpStatus.BAD_REQUEST;
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                internalServerError,
+                ZonedDateTime.now()
+        );
+
+        return new ResponseEntity<>(apiException, internalServerError);
+    }
+
+    @ExceptionHandler(value = {MultipartException.class})
+    public ResponseEntity<Object> MultipartExceptionError (MultipartException e) {
+
+        HttpStatus internalServerError = HttpStatus.BAD_REQUEST;
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                internalServerError,
+                ZonedDateTime.now()
+        );
+
+        return new ResponseEntity<>(apiException, internalServerError);
     }
 }
