@@ -4,6 +4,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.text.TextPosition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,10 @@ public class FileEdit {
 
     PDDocument inptPdf;
 
+    @Autowired
+    SearchSubword searchSubword;
+
+
     public void convertFile(MultipartFile multipartFile) throws IOException {
         file = convert(multipartFile);
     }
@@ -37,6 +43,15 @@ public class FileEdit {
 
         inptPdf = PDDocument.load(file);
 
+
+        //test---------------------------------------------------------------------------------------------------------
+
+        searchSubword.printSubwordsImproved(inptPdf, "podp");
+        //System.out.println(searchSubword.findSubwordsImproved(inptPdf, 1, "podpis"));
+
+        //test---------------------------------------------------------------------------------------------------------
+
+
         //adding image
         PDPage firstPage = inptPdf.getPage(0);
         File imageJPG = pngToJpg(image);
@@ -44,7 +59,7 @@ public class FileEdit {
         PDImageXObject image2 = PDImageXObject.createFromFile(imageJPG.getPath(), inptPdf);
 
         PDPageContentStream contentStream2 = new PDPageContentStream(inptPdf, firstPage, PDPageContentStream.AppendMode.APPEND, true, true);
-        contentStream2.drawImage(image2, 105, 355, 100, 40);
+        contentStream2.drawImage(image2, 105, 470, 100, 40);
 
         Logging.logger.info("Signature was added to PDF file");
 
@@ -88,6 +103,4 @@ public class FileEdit {
     public PDDocument save2() throws IOException {
         return inptPdf;
     }
-
-
 }
