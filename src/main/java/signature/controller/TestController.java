@@ -18,9 +18,14 @@ import java.util.Objects;
 @Controller
 public class TestController {
 
-    @GetMapping("/")
-    public String start() {
+    @GetMapping("/first")
+    public String startFirst() {
         return "index";
+    }
+
+    @GetMapping("/second")
+    public String startSecond() {
+        return "indexSecond";
     }
 
     @GetMapping("/upload")
@@ -35,8 +40,7 @@ public class TestController {
 
     @Autowired
     FileEdit fileEdit;
-
-
+    
     @PostMapping("/receivePdf")
     public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) {
 
@@ -59,8 +63,8 @@ public class TestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/receiveImage")
-    public ResponseEntity<FileUploadResponse> uploadImages(@RequestParam("file") MultipartFile multipartFile) {
+    @PostMapping("/receiveImageOne")
+    public ResponseEntity<FileUploadResponse> uploadImageOne(@RequestParam("file") MultipartFile multipartFile) {
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
@@ -68,7 +72,30 @@ public class TestController {
         Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
 
         try {
-            fileEdit.editFile2(multipartFile);
+            fileEdit.editFile2(multipartFile, 1);
+        } catch (IOException ex) {
+            Logging.logger.info("ERROR: Image file not found:\n");
+            ex.printStackTrace();
+            System.exit(1);
+        }
+
+        FileUploadResponse response = new FileUploadResponse();
+        response.setFileName(fileName);
+        response.setSize(size);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/receiveImageTwo")
+    public ResponseEntity<FileUploadResponse> uploadImageTwo(@RequestParam("file") MultipartFile multipartFile) {
+
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        long size = multipartFile.getSize();
+
+        Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
+
+        try {
+            fileEdit.editFile2(multipartFile, 2);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Image file not found:\n");
             ex.printStackTrace();
