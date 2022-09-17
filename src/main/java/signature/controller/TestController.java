@@ -7,12 +7,15 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 import signature.Logging;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -38,17 +41,27 @@ public class TestController {
         return "download";
     }
 
+
     @Autowired
     FileEdit fileEdit;
 
+    public static List<FileEdit> fileEditList = new ArrayList<>();
+
+    public static List<Integer> editIDList = new ArrayList<>();
+
+    public static Integer editID = 0;
+
+
     @PostMapping("/receivePdf")
     public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) {
+
+        fileEditList.add(fileEdit);
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
 
         try {
-            fileEdit.convertFile(multipartFile);
+            fileEditList.get(editID).convertFile(multipartFile);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Input PDF not found:\n");
             ex.printStackTrace();
@@ -60,8 +73,11 @@ public class TestController {
         response.setSize(size);
         Logging.logger.info("PDF was received: " + fileName + "  size: " + size + " bytes");
 
+        //editID++;
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 
     @PostMapping("/receiveImageOne")
     public ResponseEntity<FileUploadResponse> uploadImageOne(@RequestParam("file") MultipartFile multipartFile) {
@@ -72,7 +88,7 @@ public class TestController {
         Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
 
         try {
-            fileEdit.editFile2(multipartFile, 1);
+            fileEditList.get(editID).editFile2(multipartFile, 1);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Image file not found:\n");
             ex.printStackTrace();
@@ -95,7 +111,7 @@ public class TestController {
         Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
 
         try {
-            fileEdit.editFile2(multipartFile, 2);
+            fileEditList.get(editID).editFile2(multipartFile, 2);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Image file not found:\n");
             ex.printStackTrace();
@@ -112,9 +128,9 @@ public class TestController {
     @GetMapping(value = "/downloadPdf")
     public ResponseEntity<byte[]> getPDF() throws IOException {
 
-        PDDocument document = null;
+        PDDocument document = new PDDocument();
 
-        document = fileEdit.save2();
+        document = fileEditList.get(editID).save2();
 
         if (document == null) {
             Logging.logger.info("ERROR: Document to sign not found.");

@@ -2,20 +2,9 @@
 
 <script type="text/javascript">
 
-        function downloadFile (URL, fileName){
-            let link = document.createElement("a");
-
-            link.setAttribute("download", fileName);
-            link.href = URL;
-
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-        }
-
-           function download() {
-            var m = confirm("Want to download file?");
-            if (m) {
+    function download() {
+        var m = confirm("Want to download file?");
+        if (m) {
 
             window.location.replace("http://localhost:8080/downloadPdf");
 
@@ -28,8 +17,6 @@
 
         }
     }
-
-
 
 
 </script>
