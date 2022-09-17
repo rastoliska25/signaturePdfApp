@@ -44,8 +44,7 @@ public class FileEdit {
 
         inptPdf = PDDocument.load(file);
 
-
-        //getting coordinates
+        //getting coordinates + page number
         List<Float> listResult = searchSubword.printSubwordsImprovedList(inptPdf, "podpis1");
         float x = listResult.get(0);
         float y = listResult.get(1);
