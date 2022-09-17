@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -44,24 +45,22 @@ public class FileEdit {
         inptPdf = PDDocument.load(file);
 
 
-        //test---------------------------------------------------------------------------------------------------------
-
-        searchSubword.printSubwordsImproved(inptPdf, "podp");
-        //System.out.println(searchSubword.findSubwordsImproved(inptPdf, 1, "podpis"));
-
-        //test---------------------------------------------------------------------------------------------------------
-
+        //getting coordinates
+        List<Float> listResult = searchSubword.printSubwordsImprovedList(inptPdf, "podpis1");
+        float x = listResult.get(0);
+        float y = listResult.get(1);
+        Float pageNumber = listResult.get(2);
 
         //adding image
-        PDPage firstPage = inptPdf.getPage(0);
+        PDPage firstPage = inptPdf.getPage((int) (pageNumber-1));
         File imageJPG = pngToJpg(image);
 
         PDImageXObject image2 = PDImageXObject.createFromFile(imageJPG.getPath(), inptPdf);
 
         PDPageContentStream contentStream2 = new PDPageContentStream(inptPdf, firstPage, PDPageContentStream.AppendMode.APPEND, true, true);
-        contentStream2.drawImage(image2, 105, 470, 100, 40);
+        contentStream2.drawImage(image2, x, 825-y, 100, 40);
 
-        Logging.logger.info("Signature was added to PDF file");
+        Logging.logger.info("Signature was added to PDF file to coordinates x: " +x + " y: " + (825-y));
 
         contentStream2.close();
     }
