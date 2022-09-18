@@ -62,7 +62,7 @@
 
                 formData.append("file", blob, "image.png");
 
-                fetch('http://localhost:8080/receiveImageTwo', {
+                fetch('http://localhost:8080/receiveImageTwo/[[${link}]]', {
                 method: "POST",
                 body: formData
                 });

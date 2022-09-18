@@ -29,7 +29,7 @@ public class TestController {
     @Autowired
     FileEdit fileEdit;
 
-    public static HashMap<String, FileEdit> streamMap = new HashMap<String, FileEdit>();
+    public static HashMap<Integer, FileEdit> streamMap = new HashMap<Integer, FileEdit>();
 
     public static List<FileEdit> fileEditList = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class TestController {
     }
 
     @GetMapping("/urls/{id}")
-    public String urls(@PathVariable String id, Model model) {
+    public String urls(@PathVariable Integer id, Model model) {
         model.addAttribute("firstLink", "http://localhost:8080/first/" + id);
 
         model.addAttribute("secondLink", "http://localhost:8080/second/" + id);
@@ -55,13 +55,14 @@ public class TestController {
     }
 
     @GetMapping("/first/{id}")
-    public String startFirst(@PathVariable String id, Model model) {
-        model.addAttribute("firstLink", id);
+    public String startFirst(@PathVariable Integer id, Model model) {
+        model.addAttribute("link", id);
         return "index";
     }
 
     @GetMapping("/second/{id}")
-    public String startSecond(@PathVariable String id) {
+    public String startSecond(@PathVariable Integer id, Model model) {
+        model.addAttribute("link", id);
         return "indexSecond";
     }
 
@@ -71,7 +72,7 @@ public class TestController {
     }
 
     @PostMapping("/receivePdf/{id}")
-    public ResponseEntity<FileUploadResponse> uploadFiles(@PathVariable String id, @RequestParam("file") MultipartFile multipartFile) {
+    public ResponseEntity<FileUploadResponse> uploadFiles(@PathVariable Integer id, @RequestParam("file") MultipartFile multipartFile) {
 
         streamMap.put(id,fileEdit);
         fileEditList.add(fileEdit);
@@ -100,7 +101,7 @@ public class TestController {
 
 
     @PostMapping("/receiveImageOne/{id}")
-    public ResponseEntity<FileUploadResponse> uploadImageOne(@PathVariable String id, @RequestParam("file") MultipartFile multipartFile) {
+    public ResponseEntity<FileUploadResponse> uploadImageOne(@PathVariable Integer id, @RequestParam("file") MultipartFile multipartFile) {
 
         System.out.println(id);
 
@@ -125,8 +126,8 @@ public class TestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/receiveImageTwo")
-    public ResponseEntity<FileUploadResponse> uploadImageTwo(@RequestParam("file") MultipartFile multipartFile) {
+    @PostMapping("/receiveImageTwo/{id}")
+    public ResponseEntity<FileUploadResponse> uploadImageTwo(@PathVariable Integer id, @RequestParam("file") MultipartFile multipartFile) {
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
@@ -134,8 +135,8 @@ public class TestController {
         Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
 
         try {
-            fileEditList.get(editID).editFile2(multipartFile, 2);
-            //streamMap.get(Integer.valueOf(id)).editFile2(multipartFile, 1);
+            //fileEditList.get(editID).editFile2(multipartFile, 2);
+            streamMap.get(id).editFile2(multipartFile, 2);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Image file not found:\n");
             ex.printStackTrace();
