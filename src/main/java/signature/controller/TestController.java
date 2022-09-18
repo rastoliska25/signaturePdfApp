@@ -8,20 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import signature.Logging;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class TestController {
@@ -31,18 +24,10 @@ public class TestController {
 
     public static HashMap<Integer, FileEdit> streamMap = new HashMap<Integer, FileEdit>();
 
-    public static List<FileEdit> fileEditList = new ArrayList<>();
-
-    public static List<Integer> codeListId = new ArrayList<>();
-
-    public static List<String> codeList = new ArrayList<>();
-
-    public static Integer editID = 0;
-
     @GetMapping("/upload")
     public String upload(Model model) {
-        //model.addAttribute("link", streamMap.get("0"));
-        model.addAttribute("link", 123);
+        Integer random = new Random().nextInt(100000000, 999999999);
+        model.addAttribute("link", random);
         return "upload";
     }
 
@@ -75,8 +60,7 @@ public class TestController {
     @PostMapping("/receivePdf/{id}")
     public ResponseEntity<FileUploadResponse> uploadFiles(@PathVariable Integer id, @RequestParam("file") MultipartFile multipartFile) {
 
-        streamMap.put(id,fileEdit);
-        fileEditList.add(fileEdit);
+        streamMap.put(id, fileEdit);
         Logging.logger.info("File was added to hashmap with id: " + id);
 
 
@@ -84,7 +68,6 @@ public class TestController {
         long size = multipartFile.getSize();
 
         try {
-            //fileEditList.get(editID).convertFile(multipartFile);
             streamMap.get(id).convertFile(multipartFile);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Input PDF not found:\n");
@@ -112,7 +95,6 @@ public class TestController {
         Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
 
         try {
-            //fileEditList.get(editID).editFile2(multipartFile, 1);
             streamMap.get(id).editFile2(multipartFile, 1);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Image file not found:\n");
@@ -136,7 +118,6 @@ public class TestController {
         Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
 
         try {
-            //fileEditList.get(editID).editFile2(multipartFile, 2);
             streamMap.get(id).editFile2(multipartFile, 2);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Image file not found:\n");
@@ -154,9 +135,7 @@ public class TestController {
     @GetMapping(value = "/downloadPdf/{id}")
     public ResponseEntity<byte[]> getPDF(@PathVariable Integer id) throws IOException {
 
-        PDDocument document = new PDDocument();
-
-        //document = fileEditList.get(editID).save2();
+        PDDocument document;
         document = streamMap.get(id).save2();
 
         if (document == null) {
@@ -165,7 +144,7 @@ public class TestController {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         document.save(byteArrayOutputStream);
-        document.close();
+        //document.close();
         InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         byte[] bytes = IOUtils.toByteArray(inputStream);
 
@@ -181,4 +160,5 @@ public class TestController {
 
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
+
 }

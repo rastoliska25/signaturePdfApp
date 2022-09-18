@@ -25,7 +25,6 @@ public class SearchSubword {
             for (TextPositionSequence hit : hits) {
                 if (!searchTerm.equals(hit.toString()))
                     Logging.logger.info(" Problem finding signature mark: " + hit.toString());
-                TextPosition lastPosition = hit.textPositionAt(hit.length() - 1);
 
                 x = hit.getX();
                 y = hit.getY();

@@ -64,13 +64,6 @@ public class TextPositionSequence implements CharSequence
         return textPositions.get(start).getYDirAdj();
     }
 
-    public float getWidth()
-    {
-        TextPosition first = textPositions.get(start);
-        TextPosition last = textPositions.get(end);
-        return last.getWidthDirAdj() + last.getXDirAdj() - first.getXDirAdj();
-    }
-
     final List<TextPosition> textPositions;
     final int start, end;
 }
