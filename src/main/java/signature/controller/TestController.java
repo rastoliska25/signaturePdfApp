@@ -5,14 +5,18 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import signature.Logging;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,26 @@ import java.util.Objects;
 
 @Controller
 public class TestController {
+
+    @Autowired
+    FileEdit fileEdit;
+
+    public static List<FileEdit> fileEditList = new ArrayList<>();
+
+    public static List<Integer> editIDList = new ArrayList<>();
+
+    public static Integer editID = 0;
+
+    @GetMapping("/urls")
+    public String startFirst(Model model) {
+        String firstLink = "123";
+        String secondLink = "456";
+
+        model.addAttribute("firstLink", "http://localhost:8080/" + firstLink);
+
+        model.addAttribute("secondLink", "http://localhost:8080/" + secondLink);
+        return "urls";
+    }
 
     @GetMapping("/first")
     public String startFirst() {
@@ -40,17 +64,6 @@ public class TestController {
     public String download() {
         return "download";
     }
-
-
-    @Autowired
-    FileEdit fileEdit;
-
-    public static List<FileEdit> fileEditList = new ArrayList<>();
-
-    public static List<Integer> editIDList = new ArrayList<>();
-
-    public static Integer editID = 0;
-
 
     @PostMapping("/receivePdf")
     public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) {
