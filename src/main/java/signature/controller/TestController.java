@@ -30,28 +30,31 @@ public class TestController {
 
     public static List<FileEdit> fileEditList = new ArrayList<>();
 
-    public static List<Integer> editIDList = new ArrayList<>();
+    public static List<Integer> codeListId = new ArrayList<>();
+
+    public static List<String> codeList = new ArrayList<>();
 
     public static Integer editID = 0;
 
+    String firstLink = "123";
+    String secondLink = "456";
+
     @GetMapping("/urls")
     public String startFirst(Model model) {
-        String firstLink = "123";
-        String secondLink = "456";
+        model.addAttribute("firstLink", "http://localhost:8080/first/" + firstLink);
 
-        model.addAttribute("firstLink", "http://localhost:8080/" + firstLink);
-
-        model.addAttribute("secondLink", "http://localhost:8080/" + secondLink);
+        model.addAttribute("secondLink", "http://localhost:8080/second/" + secondLink);
         return "urls";
     }
 
-    @GetMapping("/first")
-    public String startFirst() {
+    @GetMapping("/first/{id}")
+    public String startFirst(@PathVariable String id, Model model) {
+        model.addAttribute("firstLink", "http://localhost:8080/receiveImageOne/" + firstLink);
         return "index";
     }
 
-    @GetMapping("/second")
-    public String startSecond() {
+    @GetMapping("/second/{id}")
+    public String startSecond(@PathVariable String id) {
         return "indexSecond";
     }
 

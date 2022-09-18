@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <script type="text/javascript">
     var canvas, ctx, flag = false,
         prevX = 0,
@@ -111,6 +112,8 @@
 
 <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:25%;left:7%;">
 <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:25%;left:10%;">
+
+<a th:href="${firstLink}" th:text="${firstLink}" target="_blank"/>
 
 <div id="container"></div>
 
