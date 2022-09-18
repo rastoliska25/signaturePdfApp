@@ -29,7 +29,8 @@ public class TestController {
     @Autowired
     FileEdit fileEdit;
 
-    public static HashMap<String, String> streamMap = new HashMap<String, String>();
+    public static HashMap<String, FileEdit> streamMap = new HashMap<String, FileEdit>();
+
     public static List<FileEdit> fileEditList = new ArrayList<>();
 
     public static List<Integer> codeListId = new ArrayList<>();
@@ -40,7 +41,6 @@ public class TestController {
 
     @GetMapping("/upload")
     public String upload(Model model) {
-        streamMap.put("0","123");
         //model.addAttribute("link", streamMap.get("0"));
         model.addAttribute("link", 123);
         return "upload";
@@ -73,6 +73,7 @@ public class TestController {
     @PostMapping("/receivePdf/{id}")
     public ResponseEntity<FileUploadResponse> uploadFiles(@PathVariable String id, @RequestParam("file") MultipartFile multipartFile) {
 
+        streamMap.put(id,fileEdit);
         fileEditList.add(fileEdit);
         Logging.logger.info("File was added to hashmap with id: " + id);
 
@@ -81,7 +82,8 @@ public class TestController {
         long size = multipartFile.getSize();
 
         try {
-            fileEditList.get(editID).convertFile(multipartFile);
+            //fileEditList.get(editID).convertFile(multipartFile);
+            streamMap.get(id).convertFile(multipartFile);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Input PDF not found:\n");
             ex.printStackTrace();
@@ -92,10 +94,6 @@ public class TestController {
         response.setFileName(fileName);
         response.setSize(size);
         Logging.logger.info("PDF was received: " + fileName + "  size: " + size + " bytes");
-
-        //editID++;
-
-        //model.addAttribute("lLink", link);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -112,7 +110,8 @@ public class TestController {
         Logging.logger.info("Signature image was received: " + fileName + "  , size: " + size + " bytes");
 
         try {
-            fileEditList.get(editID).editFile2(multipartFile, 1);
+            //fileEditList.get(editID).editFile2(multipartFile, 1);
+            streamMap.get(id).editFile2(multipartFile, 1);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Image file not found:\n");
             ex.printStackTrace();
@@ -136,6 +135,7 @@ public class TestController {
 
         try {
             fileEditList.get(editID).editFile2(multipartFile, 2);
+            //streamMap.get(Integer.valueOf(id)).editFile2(multipartFile, 1);
         } catch (IOException ex) {
             Logging.logger.info("ERROR: Image file not found:\n");
             ex.printStackTrace();
