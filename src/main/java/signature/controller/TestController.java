@@ -49,7 +49,7 @@ public class TestController {
 
     @GetMapping("/first/{id}")
     public String startFirst(@PathVariable String id, Model model) {
-        model.addAttribute("firstLink", "http://localhost:8080/receiveImageOne/" + firstLink);
+        model.addAttribute("firstLink", id);
         return "index";
     }
 
@@ -95,8 +95,10 @@ public class TestController {
     }
 
 
-    @PostMapping("/receiveImageOne")
-    public ResponseEntity<FileUploadResponse> uploadImageOne(@RequestParam("file") MultipartFile multipartFile) {
+    @PostMapping("/receiveImageOne/{id}")
+    public ResponseEntity<FileUploadResponse> uploadImageOne(@PathVariable String id, @RequestParam("file") MultipartFile multipartFile) {
+
+        System.out.println(id);
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
