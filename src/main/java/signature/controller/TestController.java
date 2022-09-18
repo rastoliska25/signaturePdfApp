@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ public class TestController {
     @Autowired
     FileEdit fileEdit;
 
+    public static HashMap<String, String> streamMap = new HashMap<String, String>();
     public static List<FileEdit> fileEditList = new ArrayList<>();
 
     public static List<Integer> codeListId = new ArrayList<>();
@@ -36,14 +38,19 @@ public class TestController {
 
     public static Integer editID = 0;
 
-    String firstLink = "123";
-    String secondLink = "456";
+    @GetMapping("/upload")
+    public String upload(Model model) {
+        streamMap.put("0","123");
+        //model.addAttribute("link", streamMap.get("0"));
+        model.addAttribute("link", 123);
+        return "upload";
+    }
 
-    @GetMapping("/urls")
-    public String startFirst(Model model) {
-        model.addAttribute("firstLink", "http://localhost:8080/first/" + firstLink);
+    @GetMapping("/urls/{id}")
+    public String urls(@PathVariable String id, Model model) {
+        model.addAttribute("firstLink", "http://localhost:8080/first/" + id);
 
-        model.addAttribute("secondLink", "http://localhost:8080/second/" + secondLink);
+        model.addAttribute("secondLink", "http://localhost:8080/second/" + id);
         return "urls";
     }
 
@@ -58,20 +65,17 @@ public class TestController {
         return "indexSecond";
     }
 
-    @GetMapping("/upload")
-    public String upload() {
-        return "upload";
-    }
-
     @GetMapping("/download")
     public String download() {
         return "download";
     }
 
-    @PostMapping("/receivePdf")
-    public ResponseEntity<FileUploadResponse> uploadFiles(@RequestParam("file") MultipartFile multipartFile) {
+    @PostMapping("/receivePdf/{id}")
+    public ResponseEntity<FileUploadResponse> uploadFiles(@PathVariable String id, @RequestParam("file") MultipartFile multipartFile) {
 
         fileEditList.add(fileEdit);
+        Logging.logger.info("File was added to hashmap with id: " + id);
+
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
@@ -90,6 +94,8 @@ public class TestController {
         Logging.logger.info("PDF was received: " + fileName + "  size: " + size + " bytes");
 
         //editID++;
+
+        //model.addAttribute("lLink", link);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

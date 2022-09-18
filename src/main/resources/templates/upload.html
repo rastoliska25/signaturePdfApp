@@ -1,6 +1,6 @@
 <Html>
-
-<script type="text/javascript">
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:inline="javascript">
 
     async function uploadFile() {
 
@@ -17,13 +17,15 @@
                 let formData = new FormData();
                 formData.append("file", fileupload.files[0]);
 
-                await fetch('http://localhost:8080/receivePdf', {
+                await fetch('http://localhost:8080/receivePdf/[[${link}]]', {
                 method: "POST",
                 body: formData
                 });
                 alert('The file has been uploaded successfully.');
 
-                window.location.replace("http://localhost:8080/urls");
+                window.location.replace('http://localhost:8080/urls/[[${link}]]');
+
+                //window.location.replace("http://localhost:8080/urls/");
             } else {
                 alert('Only PDF files can be uploaded');
             }
