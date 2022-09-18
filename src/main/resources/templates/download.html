@@ -1,12 +1,12 @@
 <Html>
-
-<script type="text/javascript">
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:inline="javascript">
 
     function download() {
         var m = confirm("Want to download file?");
         if (m) {
 
-            window.location.replace("http://localhost:8080/downloadPdf");
+            window.location.replace("http://localhost:8080/downloadPdf/[[${link}]]");
 
             alert('The file has been downloaded successfully.');
 

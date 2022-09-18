@@ -66,8 +66,9 @@ public class TestController {
         return "indexSecond";
     }
 
-    @GetMapping("/download")
-    public String download() {
+    @GetMapping("/download/{id}")
+    public String download(@PathVariable Integer id, Model model) {
+        model.addAttribute("link", id);
         return "download";
     }
 
@@ -150,12 +151,13 @@ public class TestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/downloadPdf")
-    public ResponseEntity<byte[]> getPDF() throws IOException {
+    @GetMapping(value = "/downloadPdf/{id}")
+    public ResponseEntity<byte[]> getPDF(@PathVariable Integer id) throws IOException {
 
         PDDocument document = new PDDocument();
 
-        document = fileEditList.get(editID).save2();
+        //document = fileEditList.get(editID).save2();
+        document = streamMap.get(id).save2();
 
         if (document == null) {
             Logging.logger.info("ERROR: Document to sign not found.");
