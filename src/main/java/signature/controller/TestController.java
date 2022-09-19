@@ -31,6 +31,9 @@ public class TestController {
     @Value("${url}")
     private String url;
 
+    @Value("${deleteTimeInHours}")
+    private Long deleteTimeInHours;
+
     @GetMapping("/upload")
     public String upload(Model model) {
         Integer random = new Random().nextInt(100000000, 999999999);
@@ -77,6 +80,18 @@ public class TestController {
 
         streamMap.put(id, fileEdit);
         Logging.logger.info("File was added to hashmap with id: " + id);
+
+        //delete po nastavenej dobe----------------------------------------
+        TimerTask task = new TimerTask() {
+            public void run() {
+                System.out.println("File was deleted with id: " + id);
+                streamMap.remove(id);
+            }
+        };
+        Timer timer = new Timer("Timer");
+        long delay = deleteTimeInHours * 1000;
+        timer.schedule(task, delay);
+        //----------------------------------------------------------------
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         long size = multipartFile.getSize();
