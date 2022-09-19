@@ -37,13 +37,12 @@ public class FileEdit {
 
     private PDDocument inptPdf;
 
+    public Integer firstSignature = 0;
+    public Integer secondSignature = 0;
+
     public void convertFile(MultipartFile multipartFile) throws IOException {
         file = convert(multipartFile);
         inptPdf = PDDocument.load(file);
-
-        System.out.println(signature1);
-        System.out.println(signature2);
-
     }
 
     public void editFile2(MultipartFile imageFile, Integer id) throws IOException {
@@ -75,8 +74,10 @@ public class FileEdit {
 
         if (id == 1) {
             Logging.logger.info("First signature was added to PDF file to coordinates x: " + x + " y: " + (825 - y));
+            firstSignature = 1;
         } else {
             Logging.logger.info("Second signature was added to PDF file to coordinates x: " + x + " y: " + (825 - y));
+            secondSignature = 1;
         }
         contentStream2.close();
     }

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import signature.Logging;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
@@ -33,6 +35,8 @@ public class TestController {
 
     @Value("${deleteTimeInHours}")
     private Long deleteTimeInHours;
+
+    Integer count = 10;
 
     @GetMapping("/upload")
     public String upload(Model model) {
@@ -68,6 +72,15 @@ public class TestController {
     public String download(@PathVariable Integer id, Model model) {
         model.addAttribute("link", id);
         model.addAttribute("url", url);
+
+        System.out.println(streamMap.get(id).firstSignature + "     " + streamMap.get(id).secondSignature);
+
+        if (streamMap.get(id).firstSignature == 1 && streamMap.get(id).secondSignature == 1) {
+            model.addAttribute("signed", 1);
+        } else {
+            model.addAttribute("signed", 0);
+        }
+
         return "download";
     }
 
@@ -164,37 +177,57 @@ public class TestController {
     @GetMapping(value = "/downloadPdf/{id}")
     public ResponseEntity<byte[]> getPDF(@PathVariable Integer id) throws IOException {
 
-        PDDocument document = new PDDocument();
-
         try {
+            PDDocument document = new PDDocument();
+
             document = streamMap.get(id).save2();
-        } catch(NullPointerException ex) {
+
+            if (document == null) {
+                Logging.logger.info("ERROR: Document to sign not found.");
+            }
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            document.save(byteArrayOutputStream);
+
+            InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+
+            String filename = "output.pdf";
+
+            Logging.logger.info("PDF was downloaded: " + filename);
+
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+
+        } catch (NullPointerException ex) {
             Logging.logger.info("File download time has expired");
-        };
-
-        if (document == null) {
-            Logging.logger.info("ERROR: Document to sign not found.");
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        document.save(byteArrayOutputStream);
+    @GetMapping("/url")
+    public String getResultBySearchKey(Model model)
+    {
+        model.addAttribute("link",123456);
+        System.out.println("working");
 
-        //document.close();
+        //return "download :: list";
+        return "download :: link";
+    }
 
-        InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        byte[] bytes = IOUtils.toByteArray(inputStream);
+    @RequestMapping(value="/event-count", method=RequestMethod.GET)
+    public String getEventCount(ModelMap map) {
+        // TODO: retrieve the new value here so you can add it to model map
+        //map.addAttribute("numDeviceEventsWithAlarm", 1500);
+        map.addAttribute("list", 1500);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-
-        String filename = "output.pdf";
-
-        Logging.logger.info("PDF was downloaded: " + filename);
-
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-
-        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+        //return "download :: #eventCount";
+        return "download :: list";
     }
 
 }

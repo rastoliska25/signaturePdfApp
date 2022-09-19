@@ -3,21 +3,81 @@
 <script th:inline="javascript">
 
     function download() {
+
         var m = confirm("Want to download file?");
         if (m) {
+            if ([[${signed}]] == 0) {
+                var x = confirm("The other person has not signed yet, do you want to download file anyway? ");
+                if (x) {
 
-            window.location.replace("/downloadPdf/[[${link}]]");
+                    window.location.replace("/downloadPdf/[[${link}]]");
 
-            alert('The file has been downloaded successfully.');
+                    alert('The file has been downloaded successfully.');
 
-            window.location.replace("/upload");
+                    window.location.replace("/upload");
 
-            localStorage.clear();
-            form.reset();
+                    localStorage.clear();
+                    form.reset();
+                }
+            } else {
 
+                window.location.replace("/downloadPdf/[[${link}]]");
+
+                alert('The file has been downloaded successfully.');
+
+                window.location.replace("/upload");
+
+                localStorage.clear();
+                form.reset();
+            }
         }
     }
 
+
+    function getUrl() {
+       fetch('/url', {
+       method: "POST",
+       Headers: {
+        Accept: 'application.json',
+        'Content-Type': 'application/json'
+        }
+       });
+
+       alert([[${link}]]);
+    }
+
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    function showUserPhoto() {
+    var x = "test";
+        $.ajax({
+            url : "http://localhost:8080/url",
+            type: 'GET',
+            dataType: 'json',
+            cache: false,
+        success: function(response){
+            //console.log([[${link}]]);
+            //console.log([[${test}]]);
+            //alert( response );
+            console.log("testttt");
+            //alert(response);
+
+        },
+        error : function(jqxhr) {
+            console.log("error")
+        }
+        });
+    }
+
+    function updateEventCount() {
+        $.get("url").done(function(data) {
+            alert(data);
+        });
+    }
 
 </script>
 
@@ -34,12 +94,16 @@
             cursor: pointer;
             }
 
+
     </style>
 </head>
 
 <body>
 
 <button id="download-button" onclick="download()"> Download</button>
+<button id="testButton" onclick="getUrl()"> Show</button>
+<button id="testButton2" onclick="updateEventCount()"> ShowEventCount</button>
+
 
 </body>
 
