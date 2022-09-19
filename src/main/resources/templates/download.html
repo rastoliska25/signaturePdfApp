@@ -6,11 +6,11 @@
         var m = confirm("Want to download file?");
         if (m) {
 
-            window.location.replace("http://localhost:8080/downloadPdf/[[${link}]]");
+            window.location.replace("/downloadPdf/[[${link}]]");
 
             alert('The file has been downloaded successfully.');
 
-            window.location.replace("http://localhost:8080/upload");
+            window.location.replace("/upload");
 
             localStorage.clear();
             form.reset();
