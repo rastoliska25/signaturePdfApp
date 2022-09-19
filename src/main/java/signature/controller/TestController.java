@@ -165,7 +165,12 @@ public class TestController {
     public ResponseEntity<byte[]> getPDF(@PathVariable Integer id) throws IOException {
 
         PDDocument document = new PDDocument();
-        document = streamMap.get(id).save2();
+
+        try {
+            document = streamMap.get(id).save2();
+        } catch(NullPointerException ex) {
+            Logging.logger.info("File download time has expired");
+        };
 
         if (document == null) {
             Logging.logger.info("ERROR: Document to sign not found.");
