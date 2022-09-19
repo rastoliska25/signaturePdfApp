@@ -27,21 +27,18 @@ import java.util.Objects;
 @Component
 public class FileEdit {
 
-    File file;
+    private File file;
 
-    PDDocument inptPdf;
-
-    @Autowired
-    SearchSubword searchSubword;
-
-
+    private PDDocument inptPdf;
+    
     public void convertFile(MultipartFile multipartFile) throws IOException {
         file = convert(multipartFile);
         inptPdf = PDDocument.load(file);
     }
 
-
     public void editFile2(MultipartFile imageFile, Integer id) throws IOException {
+
+        SearchSubword searchSubword = new SearchSubword();
 
         File image = convert(imageFile);
 

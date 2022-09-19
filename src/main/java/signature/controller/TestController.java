@@ -19,9 +19,6 @@ import java.util.*;
 @Controller
 public class TestController {
 
-    @Autowired
-    FileEdit fileEdit;
-
     public static HashMap<Integer, FileEdit> streamMap = new HashMap<Integer, FileEdit>();
 
     @GetMapping("/upload")
@@ -59,6 +56,8 @@ public class TestController {
 
     @PostMapping("/receivePdf/{id}")
     public ResponseEntity<FileUploadResponse> uploadFiles(@PathVariable Integer id, @RequestParam("file") MultipartFile multipartFile) {
+
+        FileEdit fileEdit = new FileEdit();
 
         streamMap.put(id, fileEdit);
         Logging.logger.info("File was added to hashmap with id: " + id);
@@ -135,7 +134,7 @@ public class TestController {
     @GetMapping(value = "/downloadPdf/{id}")
     public ResponseEntity<byte[]> getPDF(@PathVariable Integer id) throws IOException {
 
-        PDDocument document;
+        PDDocument document = new PDDocument();
         document = streamMap.get(id).save2();
 
         if (document == null) {
@@ -144,7 +143,9 @@ public class TestController {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         document.save(byteArrayOutputStream);
+
         //document.close();
+
         InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         byte[] bytes = IOUtils.toByteArray(inputStream);
 
