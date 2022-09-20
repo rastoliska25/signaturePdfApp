@@ -1,9 +1,10 @@
 <Html>
 <html xmlns:th="http://www.thymeleaf.org">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script th:inline="javascript">
 
     function download() {
-
+        updateEventCount();
         var m = confirm("Want to download file?");
         if (m) {
             if ([[${signed}]] == 0) {
@@ -33,51 +34,25 @@
         }
     }
 
-
     function getUrl() {
-       fetch('/url', {
-       method: "POST",
-       Headers: {
-        Accept: 'application.json',
-        'Content-Type': 'application/json'
-        }
-       });
-
-       alert([[${link}]]);
+       alert([[${eventCount}]]);
     }
 
 
-</script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<script>
-    function showUserPhoto() {
-    var x = "test";
-        $.ajax({
-            url : "http://localhost:8080/url",
-            type: 'GET',
-            dataType: 'json',
-            cache: false,
-        success: function(response){
-            //console.log([[${link}]]);
-            //console.log([[${test}]]);
-            //alert( response );
-            console.log("testttt");
-            //alert(response);
 
-        },
-        error : function(jqxhr) {
-            console.log("error")
-        }
-        });
-    }
+
+
 
     function updateEventCount() {
-        $.get("url").done(function(data) {
-            alert(data);
+        $.get("event-count").done(function(fragment) { // get from controller
+            $("#eventCount").replaceWith(fragment); // update snippet of page
+            alert(fragment);
         });
     }
+
+
 
 </script>
 
@@ -104,6 +79,8 @@
 <button id="testButton" onclick="getUrl()"> Show</button>
 <button id="testButton2" onclick="updateEventCount()"> ShowEventCount</button>
 
+<span id="eventCount2" th:text="${msg}"></span>
+<span id="eventCount" th:text="${msg2}"></span>
 
 </body>
 

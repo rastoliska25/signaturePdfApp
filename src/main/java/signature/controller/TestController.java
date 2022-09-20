@@ -210,24 +210,42 @@ public class TestController {
         }
     }
 
-    @GetMapping("/url")
+    @GetMapping("/urlValue")
     public String getResultBySearchKey(Model model)
     {
         model.addAttribute("link",123456);
+        model.addAttribute("links",123456);
         System.out.println("working");
 
         //return "download :: list";
         return "download :: link";
     }
 
-    @RequestMapping(value="/event-count", method=RequestMethod.GET)
+
+
+    @RequestMapping(value="/download/event-count", method=RequestMethod.GET)
     public String getEventCount(ModelMap map) {
         // TODO: retrieve the new value here so you can add it to model map
-        //map.addAttribute("numDeviceEventsWithAlarm", 1500);
-        map.addAttribute("list", 1500);
+        map.addAttribute("msg", count);
 
-        //return "download :: #eventCount";
-        return "download :: list";
+        map.addAttribute("msg2", 1500);
+
+        // change "myview" to the name of your view
+        return "download :: #eventCount";
+    }
+
+
+
+
+    @GetMapping("/download/test/{id}")
+    public String getResultBySearchKeys(ModelMap map)
+    {
+        map.addAttribute("link", 1500);
+        map.addAttribute("links", 1500);
+        System.out.println("working");
+
+        //return "download :: list";
+        return "download :: link";
     }
 
 }
