@@ -210,29 +210,6 @@ public class TestController {
         }
     }
 
-
-    @RequestMapping(value = "/download/event-count", method = RequestMethod.GET)
-    public String getEventCount(ModelMap map) {
-        // TODO: retrieve the new value here so you can add it to model map
-        map.addAttribute("msg", count);
-
-        map.addAttribute("msg2", 1500);
-
-        // change "myview" to the name of your view
-        return "download :: #eventCount";
-    }
-
-
-    @RequestMapping(value = "/download/event-count2", method = RequestMethod.GET)
-    public String getEventCount2(Model model) {
-        // TODO: retrieve the new value here so you can add it to model map
-        model.addAttribute("links", 123456);
-
-        // change "myview" to the name of your view
-        return "download :: #links";
-    }
-
-
     @GetMapping("/download/test/{id}")
     public ResponseEntity getAll(@PathVariable Integer id) {
         Integer signed;

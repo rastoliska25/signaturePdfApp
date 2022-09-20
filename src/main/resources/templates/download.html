@@ -7,7 +7,13 @@
         updateEventCount();
         var m = confirm("Want to download file?");
         if (m) {
-            if ([[${signed}]] == 0) {
+            updateEventCount()
+        }
+    }
+
+    function updateEventCount() {
+        $.get("test/[[${link}]]").done(function(fragment) {
+             if (fragment == 0) {
                 var x = confirm("The other person has not signed yet, do you want to download file anyway? ");
                 if (x) {
 
@@ -31,37 +37,8 @@
                 localStorage.clear();
                 form.reset();
             }
-        }
-    }
-
-    function getUrl() {
-       alert([[${#links}]]);
-    }
-
-
-
-
-
-
-
-
-    function updateEventCount2() {
-        $.get("event-count").done(function(fragment) {
-            $("#eventCount").replaceWith(fragment);
-            alert(fragment);
         });
     }
-
-
-
-
-        function updateEventCount() {
-        $.get("test/[[${link}]]").done(function(fragment) {
-            //$("#eventCount").replaceWith(fragment);
-            alert(fragment);
-        });
-    }
-
 
 
 </script>
@@ -86,11 +63,6 @@
 <body>
 
 <button id="download-button" onclick="download()"> Download</button>
-<button id="testButton" onclick="getUrl()"> Show</button>
-<button id="testButton2" onclick="updateEventCount()"> ShowEventCount</button>
-
-<span id="eventCount2" th:text="${msg}"></span>
-<span id="eventCount" th:text="${msg2}"></span>
 
 <br>
 <br>
