@@ -35,7 +35,7 @@
     }
 
     function getUrl() {
-       alert([[${eventCount}]]);
+       alert([[${#links}]]);
     }
 
 
@@ -45,9 +45,19 @@
 
 
 
-    function updateEventCount() {
-        $.get("event-count").done(function(fragment) { // get from controller
-            $("#eventCount").replaceWith(fragment); // update snippet of page
+    function updateEventCount2() {
+        $.get("event-count").done(function(fragment) {
+            $("#eventCount").replaceWith(fragment);
+            alert(fragment);
+        });
+    }
+
+
+
+
+        function updateEventCount() {
+        $.get("test/[[${link}]]").done(function(fragment) {
+            //$("#eventCount").replaceWith(fragment);
             alert(fragment);
         });
     }
@@ -81,6 +91,9 @@
 
 <span id="eventCount2" th:text="${msg}"></span>
 <span id="eventCount" th:text="${msg2}"></span>
+
+<br>
+<br>
 
 </body>
 

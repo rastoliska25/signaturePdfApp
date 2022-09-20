@@ -102,7 +102,7 @@ public class TestController {
             }
         };
         Timer timer = new Timer("Timer");
-        long delay = deleteTimeInHours * 1000;
+        long delay = deleteTimeInHours * 1000 * 3600;
         timer.schedule(task, delay);
         //----------------------------------------------------------------
 
@@ -210,20 +210,8 @@ public class TestController {
         }
     }
 
-    @GetMapping("/urlValue")
-    public String getResultBySearchKey(Model model)
-    {
-        model.addAttribute("link",123456);
-        model.addAttribute("links",123456);
-        System.out.println("working");
 
-        //return "download :: list";
-        return "download :: link";
-    }
-
-
-
-    @RequestMapping(value="/download/event-count", method=RequestMethod.GET)
+    @RequestMapping(value = "/download/event-count", method = RequestMethod.GET)
     public String getEventCount(ModelMap map) {
         // TODO: retrieve the new value here so you can add it to model map
         map.addAttribute("msg", count);
@@ -235,17 +223,26 @@ public class TestController {
     }
 
 
+    @RequestMapping(value = "/download/event-count2", method = RequestMethod.GET)
+    public String getEventCount2(Model model) {
+        // TODO: retrieve the new value here so you can add it to model map
+        model.addAttribute("links", 123456);
+
+        // change "myview" to the name of your view
+        return "download :: #links";
+    }
 
 
     @GetMapping("/download/test/{id}")
-    public String getResultBySearchKeys(ModelMap map)
-    {
-        map.addAttribute("link", 1500);
-        map.addAttribute("links", 1500);
-        System.out.println("working");
+    public ResponseEntity getAll(@PathVariable Integer id) {
+        Integer signed;
 
-        //return "download :: list";
-        return "download :: link";
+        if (streamMap.get(id).firstSignature == 1 && streamMap.get(id).secondSignature == 1) {
+            signed = 1;
+        } else {
+            signed = 0;
+        }
+
+        return new ResponseEntity<>(signed, HttpStatus.OK);
     }
-
 }
