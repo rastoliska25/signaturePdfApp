@@ -12,19 +12,19 @@
     }
 
     function updateEventCount() {
-        $.get("test/[[${link}]]").done(function(fragment) {
+        $.get("reload/[[${link}]]").done(function(fragment) {
              if (fragment == 0) {
-                var x = confirm("The other person has not signed yet, do you want to download file anyway? ");
-                if (x) {
+             var x = confirm("The other person has not signed yet, do you want to download file anyway? ");
+             if (x) {
 
-                    window.location.replace("/downloadPdf/[[${link}]]");
+                window.location.replace("/downloadPdf/[[${link}]]");
 
-                    alert('The file has been downloaded successfully.');
+                alert('The file has been downloaded successfully.');
 
-                    window.location.replace("/upload");
+                window.location.replace("/upload");
 
-                    localStorage.clear();
-                    form.reset();
+                localStorage.clear();
+                form.reset();
                 }
             } else {
 
@@ -40,7 +40,6 @@
         });
     }
 
-
 </script>
 
 <head>
@@ -55,6 +54,7 @@
             border-radius: 5px;
             cursor: pointer;
             }
+
 
 
     </style>

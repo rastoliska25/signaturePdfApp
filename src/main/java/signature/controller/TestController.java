@@ -210,7 +210,7 @@ public class TestController {
         }
     }
 
-    @GetMapping("/download/test/{id}")
+    @GetMapping("/download/reload/{id}")
     public ResponseEntity getAll(@PathVariable Integer id) {
         Integer signed;
 
