@@ -4,7 +4,6 @@
 <script th:inline="javascript">
 
     function download() {
-        updateEventCount();
         var m = confirm("Want to download file?");
         if (m) {
             updateEventCount()
@@ -40,6 +39,9 @@
         });
     }
 
+
+
+
 </script>
 
 <head>
@@ -56,16 +58,12 @@
             }
 
 
-
     </style>
 </head>
 
 <body>
 
 <button id="download-button" onclick="download()"> Download</button>
-
-<br>
-<br>
 
 </body>
 
