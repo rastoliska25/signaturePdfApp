@@ -2,24 +2,29 @@ package signature.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import signature.Logging;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
 
-import java.io.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 @Controller
+@CrossOrigin
 public class TestController {
 
     public static HashMap<Integer, FileEdit> streamMap = new HashMap<Integer, FileEdit>();
@@ -35,8 +40,6 @@ public class TestController {
 
     @Value("${deleteTimeInHours}")
     private Long deleteTimeInHours;
-
-    Integer count = 10;
 
     @GetMapping("/upload")
     public String upload(Model model) {
@@ -88,6 +91,10 @@ public class TestController {
     public ResponseEntity<FileUploadResponse> uploadFiles(@PathVariable Integer id, @RequestParam("file") MultipartFile multipartFile) {
 
         FileEdit fileEdit = new FileEdit();
+        fileEdit.id = id;
+        fileEdit.dateTime = String.valueOf(java.time.LocalDateTime.now());
+        fileEdit.signatureOne = url + "/first/" + id;
+        fileEdit.signatureTwo = url + "/second/" + id;
         fileEdit.signature1 = this.signature1;
         fileEdit.signature2 = this.signature2;
 
@@ -195,7 +202,7 @@ public class TestController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
 
-            String filename = "output.pdf";
+            String filename = "output" + id + ".pdf";
 
             Logging.logger.info("PDF was downloaded: " + filename);
 
@@ -219,7 +226,18 @@ public class TestController {
         } else {
             signed = 0;
         }
-
         return new ResponseEntity<>(signed, HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("/delete/{id}")
+    public void deleteTest(@PathVariable Integer id) {
+        streamMap.remove(id);
+        Logging.logger.info("File was deleted with id: " + id);
+    }
+
+    @GetMapping("/overviewData")
+    public ResponseEntity getOverview() {
+        return new ResponseEntity<>(streamMap.values(), HttpStatus.OK);
     }
 }

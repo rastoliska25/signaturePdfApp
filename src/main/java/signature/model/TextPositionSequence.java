@@ -1,8 +1,8 @@
 package signature.model;
 
-import java.util.List;
-
 import org.apache.pdfbox.text.TextPosition;
+
+import java.util.List;
 
 public class TextPositionSequence implements CharSequence
 {

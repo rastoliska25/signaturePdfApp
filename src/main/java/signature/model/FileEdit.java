@@ -4,13 +4,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.apache.pdfbox.text.TextPosition;
-import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,11 +19,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Component
 public class FileEdit {
+
+    public Integer id;
 
     public String signature1;
     public String signature2;
@@ -39,6 +35,11 @@ public class FileEdit {
 
     public Integer firstSignature = 0;
     public Integer secondSignature = 0;
+
+    public String signatureOne;
+    public String signatureTwo;
+
+    public String dateTime;
 
     public void convertFile(MultipartFile multipartFile) throws IOException {
         file = convert(multipartFile);
