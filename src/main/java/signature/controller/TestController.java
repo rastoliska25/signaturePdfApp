@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import signature.Logging;
 import signature.model.FileEdit;
 import signature.model.FileUploadResponse;
@@ -41,14 +43,6 @@ public class TestController {
     @Value("${deleteTimeInHours}")
     private Long deleteTimeInHours;
 
-    @GetMapping("/upload")
-    public String upload(Model model) {
-        Integer random = new Random().nextInt(100000000, 999999999);
-        model.addAttribute("link", random);
-        model.addAttribute("url", url);
-        return "upload";
-    }
-
     @GetMapping("/urls/{id}")
     public String urls(@PathVariable Integer id, Model model) {
         model.addAttribute("firstLink", url + "/first/" + id);
@@ -57,6 +51,7 @@ public class TestController {
         return "urls";
     }
 
+    /*
     @GetMapping("/first/{id}")
     public String startFirst(@PathVariable Integer id, Model model) {
         model.addAttribute("link", id);
@@ -64,12 +59,16 @@ public class TestController {
         return "index";
     }
 
+
+
     @GetMapping("/second/{id}")
     public String startSecond(@PathVariable Integer id, Model model) {
         model.addAttribute("link", id);
         model.addAttribute("url", url);
         return "indexSecond";
     }
+
+     */
 
     @GetMapping("/download/{id}")
     public String download(@PathVariable Integer id, Model model) {
@@ -240,4 +239,17 @@ public class TestController {
     public ResponseEntity getOverview() {
         return new ResponseEntity<>(streamMap.values(), HttpStatus.OK);
     }
+
+    @GetMapping("/links/{id}")
+    public ResponseEntity getUrls(@PathVariable Integer id, Model model) {
+        return new ResponseEntity<>(streamMap.get(id), HttpStatus.OK);
+    }
+
+    @RequestMapping("/overview")
+    public RedirectView localRedirect() {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("http://localhost:3000/overview");
+        return redirectView;
+    }
+
 }
