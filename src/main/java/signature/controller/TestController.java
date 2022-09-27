@@ -43,48 +43,6 @@ public class TestController {
     @Value("${deleteTimeInHours}")
     private Long deleteTimeInHours;
 
-    @GetMapping("/urls/{id}")
-    public String urls(@PathVariable Integer id, Model model) {
-        model.addAttribute("firstLink", url + "/first/" + id);
-        model.addAttribute("secondLink", url + "/second/" + id);
-        model.addAttribute("url", url);
-        return "urls";
-    }
-
-    /*
-    @GetMapping("/first/{id}")
-    public String startFirst(@PathVariable Integer id, Model model) {
-        model.addAttribute("link", id);
-        model.addAttribute("url", url);
-        return "index";
-    }
-
-
-
-    @GetMapping("/second/{id}")
-    public String startSecond(@PathVariable Integer id, Model model) {
-        model.addAttribute("link", id);
-        model.addAttribute("url", url);
-        return "indexSecond";
-    }
-
-     */
-
-    @GetMapping("/download/{id}")
-    public String download(@PathVariable Integer id, Model model) {
-        model.addAttribute("link", id);
-        model.addAttribute("url", url);
-
-        System.out.println(streamMap.get(id).firstSignature + "     " + streamMap.get(id).secondSignature);
-
-        if (streamMap.get(id).firstSignature == 1 && streamMap.get(id).secondSignature == 1) {
-            model.addAttribute("signed", 1);
-        } else {
-            model.addAttribute("signed", 0);
-        }
-
-        return "download";
-    }
 
     @PostMapping("/receivePdf/{id}")
     public ResponseEntity<FileUploadResponse> uploadFiles(@PathVariable Integer id, @RequestParam("file") MultipartFile multipartFile) {
